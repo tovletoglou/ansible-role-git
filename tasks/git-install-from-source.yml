@@ -1,0 +1,103 @@
+---
+
+- name: Install packages to build git from source
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - curl-devel
+    - expat-devel
+    - gettext-devel
+    - openssl-devel
+    - zlib-devel
+    - perl-devel
+    - perl-ExtUtils-MakeMaker
+
+- name: Install EPEL repository
+  yum:
+    name: epel-release
+    state: present
+  when: git_documentation
+
+- name: Install packages to build git documentaion from source
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - asciidoc
+    - xmlto
+    - docbook2X
+  when: git_documentation
+
+- name: Link docbook2x-texi to db2x_docbook2texi
+  file:
+    src: /usr/bin/db2x_docbook2texi
+    dest: /usr/bin/docbook2x-texi
+    state: link
+    owner: root
+    group: root
+    mode: 0755
+  when: git_documentation
+
+- name: Clone git from GitHub
+  git:
+    repo: https://github.com/git/git.git
+    dest: /usr/local/src/git
+    version: v2.9.1
+
+- name: Uninstall git from yum
+  yum:
+    name: git*
+    state: removed
+
+#- name: Download git source from GitHub
+#  get_url:
+#    url: "https://github.com/git/git/archive/v{{ git_version }}.tar.gz"
+#    dest: "/usr/local/src/git-v{{ git_version }}.tar.gz"
+#
+#- name: Unarchive git source
+#  unarchive:
+#    src: "/usr/local/src/git-v{{ git_version }}.tar.gz"
+#    dest: /usr/local/src
+#    copy: no
+#
+- name: Build configuration
+  shell: make configure
+  args:
+    chdir: /usr/local/src/git
+
+- name: Configure git make
+  shell: ./configure --prefix=/usr
+  args:
+    chdir: /usr/local/src/git
+
+- name: Build git
+  shell: make all
+  args:
+    chdir: /usr/local/src/git
+
+- name: Build git doc and info
+  shell: make doc info
+  args:
+    chdir: /usr/local/src/git
+  when: git_documentation
+
+- name: Install git
+  shell: make install
+  args:
+    chdir: /usr/local/src/git
+
+- name: Install doc and info
+  shell: make install-doc install-html install-info
+  args:
+    chdir: /usr/local/src/git
+  when: git_documentation
+
+#- name: delete git source
+#  file: path={{ item }} state=absent
+#  with_items:
+#    - '/usr/local/src/git-{{ git_version }}'
+#    - '/usr/local/src/git-{{ git_version }}.tar.gz'
+
+# uninstall git from source http://serverfault.com/questions/444289/how-to-uninstall-git-installed-from-the-source

@@ -1,0 +1,19 @@
+---
+
+# Choose how to install git (true = source | false = IUS repo)
+git_install_from_source: false
+
+# Update git for IUS repo every time you run this role (present | latest).
+git_update: latest
+
+# The following settings apply only when you setup git from source.
+
+# Remove git installed with yum (true | false).
+git_remove: false
+
+# Git version should be an exact version and not a branch.
+git_version: 2.9.3
+
+# Install git documentation (true | false)
+git_documentation: true
+

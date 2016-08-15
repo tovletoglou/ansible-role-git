@@ -1,0 +1,17 @@
+---
+
+- name: Install IUS repo
+  yum:
+    name: "https://centos7.iuscommunity.org/ius-release.rpm"
+    state: present
+
+- name: Remove git from base repo
+  yum:
+    name: gitx.86_64, perl-Git.86_64
+    disablerepo: ius
+    state: absent
+
+- name: Install git from IUS repo
+  yum:
+    name: git2u
+    state: "{{ git_update }}"

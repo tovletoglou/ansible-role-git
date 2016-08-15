@@ -1,0 +1,9 @@
+---
+
+- name: Install git from source
+  include: git-install-from-source.yml
+  when: git_install_from_source
+
+- name: Install git using IUS repository
+  include: git-install-from-repository.yml
+  when: not git_install_from_source
