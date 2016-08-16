@@ -7,8 +7,7 @@
 
 - name: Remove git from base repo
   yum:
-    name: gitx.86_64, perl-Git.86_64
-    disablerepo: ius
+    name: git.x86_64
     state: absent
 
 - name: Install git from IUS repo
