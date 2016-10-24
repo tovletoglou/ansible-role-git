@@ -2,7 +2,12 @@
 
 - name: Install IUS repo
   yum:
-    name: "https://centos7.iuscommunity.org/ius-release.rpm"
+    name: https://centos7.iuscommunity.org/ius-release.rpm
+    state: present
+
+- name: Import IUS GPG key
+  rpm_key:
+    key: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
     state: present
 
 - name: Remove git from base repo
