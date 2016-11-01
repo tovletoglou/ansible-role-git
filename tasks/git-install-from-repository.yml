@@ -1,5 +1,10 @@
 ---
 
+- name: Install epel repo
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
 - name: Install IUS repo
   yum:
     name: https://centos7.iuscommunity.org/ius-release.rpm
@@ -7,7 +12,7 @@
 
 - name: Import IUS GPG key
   rpm_key:
-    key: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+    key: http://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY
     state: present
 
 - name: Remove git from base repo
