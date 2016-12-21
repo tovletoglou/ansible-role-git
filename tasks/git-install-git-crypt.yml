@@ -1,0 +1,28 @@
+---
+
+- name: Install dependencies
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - gcc-c++
+    - openssl-devel
+
+- name: Clone git-crypt
+  git:
+    repo: https://github.com/AGWA/git-crypt.git
+    dest: /tmp/git-crypt
+    update: yes
+
+- name: build the git-crypt
+  make:
+    chdir: /tmp/git-crypt
+    params:
+      ENABLE_MAN=yes
+
+- name: build install the git-crypt
+  make:
+    chdir: /tmp/git-crypt
+    target: install
+    params:
+      ENABLE_MAN=yes
