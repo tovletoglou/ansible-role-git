@@ -7,7 +7,7 @@ git_install_from_source: false
 git_update: latest
 
 # Install git-crypt (true | false).
-git_install_git_crypt: true
+git_install_git_crypt: false
 
 # The following settings apply only when you setup git from source.
 
