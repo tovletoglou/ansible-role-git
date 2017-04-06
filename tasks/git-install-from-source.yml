@@ -1,6 +1,7 @@
 ---
 
 - name: Install packages to build git from source
+  become: yes
   yum:
     name: "{{ item }}"
     state: present
@@ -15,12 +16,14 @@
     - perl-ExtUtils-MakeMaker
 
 - name: Install EPEL repository
+  become: yes
   yum:
     name: epel-release
     state: present
   when: git_documentation
 
 - name: Install packages to build git documentaion from source
+  become: yes
   yum:
     name: "{{ item }}"
     state: present
@@ -31,6 +34,7 @@
   when: git_documentation
 
 - name: Link docbook2x-texi to db2x_docbook2texi
+  become: yes
   file:
     src: /usr/bin/db2x_docbook2texi
     dest: /usr/bin/docbook2x-texi
@@ -41,12 +45,14 @@
   when: git_documentation
 
 - name: Clone git from GitHub
+  become: yes
   git:
     repo: https://github.com/git/git.git
     dest: /usr/local/src/git
     version: v2.9.1
 
 - name: Uninstall git from yum
+  become: yes
   yum:
     name: git*
     state: removed

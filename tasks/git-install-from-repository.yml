@@ -16,11 +16,13 @@
 #    state: present
 #
 - name: Remove git from base repo
+  become: yes
   yum:
     name: git.x86_64
     state: absent
 
 - name: Install git from IUS repo
+  become: yes
   yum:
     name: git2u
     state: "{{ git_update }}"
